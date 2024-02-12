@@ -11,17 +11,45 @@ const App = () => {
     bad: 0,
   });
 
-  const updateFeedback = () => {
-    setReview(review => ({
-      ...review,
-      good: review.good + 1
-    }))
+  const updateFeedback = (e) => {
+    const target = e.target.textContent.toLowerCase();
+
+    switch (target) {
+      case "good":
+        setReview(() => ({
+          ...review,
+          good: review.good + 1,
+        }));
+        break;
+
+      case "neutral":
+        setReview(() => ({
+          ...review,
+          neutral: review.neutral + 1,
+        }));
+        break;
+
+      case "bad":
+        setReview(() => ({
+          ...review,
+          bad: review.bad + 1,
+        }));
+        break;
+
+      default:
+        setReview(() => ({
+          good: 0,
+          neutral: 0,
+          bad: 0,
+        }));
+        break;
+    }
   };
 
   return (
     <div>
       <Description />
-      <Options fn={updateFeedback} />
+      <Options value={updateFeedback} />
       <Feedback good={review.good} neutral={review.neutral} bad={review.bad} />
     </div>
   );
