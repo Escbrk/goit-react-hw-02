@@ -1,24 +1,30 @@
-import user from './json/user.json';
-import friends from './json/friends.json';
-import transactions from './json/transactions.json';
-import { Profile } from './components/Profile/Profile';
-import { FriendList } from './components/FriendList/FriendList';
-import { TransactionHistory } from './components/TransactionHistory/TransactionHistory';
+import { useState } from "react";
+import "./App.css";
+import Description from "./components/Description/Description";
+import Feedback from "./components/Feedback/Feedback";
+import Options from "./components/Options/Options";
 
-export const App = () => {
+const App = () => {
+  const [review, setReview] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
+
+  const updateFeedback = () => {
+    setReview(review => ({
+      ...review,
+      good: review.good + 1
+    }))
+  };
+
   return (
     <div>
-      <Profile
-        username={user.username}
-        tag={user.tag}
-        location={user.location}
-        avatar={user.avatar}
-        stats={user.stats}
-      />
-      <FriendList friends={friends} />
-      <TransactionHistory items={transactions} />
+      <Description />
+      <Options fn={updateFeedback} />
+      <Feedback good={review.good} neutral={review.neutral} bad={review.bad} />
     </div>
   );
 };
 
-
+export default App;
