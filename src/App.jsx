@@ -3,6 +3,7 @@ import "./App.css";
 import Description from "./components/Description/Description";
 import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Options";
+import Notification from "./components/Notification/Notification";
 
 const App = () => {
   const [review, setReview] = useState({
@@ -10,6 +11,7 @@ const App = () => {
     neutral: 0,
     bad: 0,
   });
+  const { good, neutral, bad } = review;
 
   const updateFeedback = (e) => {
     const target = e.target.textContent.toLowerCase();
@@ -18,21 +20,21 @@ const App = () => {
       case "good":
         setReview(() => ({
           ...review,
-          good: review.good + 1,
+          good: good + 1,
         }));
         break;
 
       case "neutral":
         setReview(() => ({
           ...review,
-          neutral: review.neutral + 1,
+          neutral: neutral + 1,
         }));
         break;
 
       case "bad":
         setReview(() => ({
           ...review,
-          bad: review.bad + 1,
+          bad: bad + 1,
         }));
         break;
 
@@ -46,11 +48,34 @@ const App = () => {
     }
   };
 
+  const totalFeedback = good + neutral + bad;
+  const positive = Math.round(((good + neutral) / totalFeedback) * 100);
+
+  const reviews = {
+    good,
+    neutral,
+    bad,
+    total: totalFeedback,
+    positive,
+  };
+  localStorage.setItem("reviews", JSON.stringify(reviews))
+  
+
   return (
-    <div>
+    <div className="container">
       <Description />
-      <Options value={updateFeedback} />
-      <Feedback good={review.good} neutral={review.neutral} bad={review.bad} />
+      <Options value={updateFeedback} total={totalFeedback} />
+      {!totalFeedback ? (
+        <Notification />
+      ) : (
+        <Feedback
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={totalFeedback}
+          positive={positive}
+        />
+      )}
     </div>
   );
 };

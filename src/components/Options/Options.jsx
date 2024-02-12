@@ -1,6 +1,6 @@
 import css from "./Options.module.css";
 
-const Options = ({ value }) => {
+const Options = ({ value, total }) => {
   return (
     <ul className={css.listContainer}>
       <li>
@@ -18,11 +18,13 @@ const Options = ({ value }) => {
           Bad
         </button>
       </li>
-      <li>
-        <button type="button" onClick={value}>
-          Reset
-        </button>
-      </li>
+      {total > 0 && (
+        <li>
+          <button type="button" onClick={value}>
+            Reset
+          </button>
+        </li>
+      )}
     </ul>
   );
 };
