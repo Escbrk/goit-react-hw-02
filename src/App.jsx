@@ -19,11 +19,11 @@ const App = () => {
       bad: 0,
     };
   });
+  const { good, neutral, bad } = review;
 
   useEffect(() => {
     localStorage.setItem("saved-review", JSON.stringify(review));
-  },[review])
-  const { good, neutral, bad } = review;
+  }, [review]);
 
   const updateFeedback = (e) => {
     const target = e.target.textContent.toLowerCase();
