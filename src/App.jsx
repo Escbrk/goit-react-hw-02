@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Description from "./components/Description/Description";
 import Feedback from "./components/Feedback/Feedback";
@@ -6,11 +6,23 @@ import Options from "./components/Options/Options";
 import Notification from "./components/Notification/Notification";
 
 const App = () => {
-  const [review, setReview] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const [review, setReview] = useState(() => {
+    const savedReview = localStorage.getItem("saved-review");
+
+    if (savedReview !== null) {
+      return JSON.parse(savedReview);
+    }
+
+    return {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    };
   });
+
+  useEffect(() => {
+    localStorage.setItem("saved-review", JSON.stringify(review));
+  },[review])
   const { good, neutral, bad } = review;
 
   const updateFeedback = (e) => {
@@ -50,16 +62,6 @@ const App = () => {
 
   const totalFeedback = good + neutral + bad;
   const positive = Math.round(((good + neutral) / totalFeedback) * 100);
-
-  const reviews = {
-    good,
-    neutral,
-    bad,
-    total: totalFeedback,
-    positive,
-  };
-  localStorage.setItem("reviews", JSON.stringify(reviews))
-  
 
   return (
     <div className="container">
