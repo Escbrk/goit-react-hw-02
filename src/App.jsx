@@ -26,38 +26,20 @@ const App = () => {
   }, [review]);
 
   const updateFeedback = (e) => {
-    const target = e.target.textContent.toLowerCase();
+    const target = e.target.name;
 
-    switch (target) {
-      case "good":
-        setReview(() => ({
-          ...review,
-          good: good + 1,
-        }));
-        break;
+    setReview(() => ({
+      ...review,
+      [target]: review[target] + 1,
+    }));
+  };
 
-      case "neutral":
-        setReview(() => ({
-          ...review,
-          neutral: neutral + 1,
-        }));
-        break;
-
-      case "bad":
-        setReview(() => ({
-          ...review,
-          bad: bad + 1,
-        }));
-        break;
-
-      default:
-        setReview(() => ({
-          good: 0,
-          neutral: 0,
-          bad: 0,
-        }));
-        break;
-    }
+  const resetFeedback = () => {
+    setReview(() => ({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    }));
   };
 
   const totalFeedback = good + neutral + bad;
@@ -66,7 +48,11 @@ const App = () => {
   return (
     <div className="container">
       <Description />
-      <Options value={updateFeedback} total={totalFeedback} />
+      <Options
+        value={updateFeedback}
+        total={totalFeedback}
+        reset={resetFeedback}
+      />
       {!totalFeedback ? (
         <Notification />
       ) : (
@@ -81,5 +67,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
