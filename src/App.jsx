@@ -5,20 +5,29 @@ import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Options";
 import Notification from "./components/Notification/Notification";
 
-const App = () => {
-  const [review, setReview] = useState(() => {
-    const savedReview = localStorage.getItem("saved-review");
-
-    if (savedReview !== null) {
-      return JSON.parse(savedReview);
-    }
-
-    return {
-      good: 0,
-      neutral: 0,
-      bad: 0,
+const getInitialReview = () => {
+  const savedReview = localStorage.getItem("saved-review");
+  return savedReview !== null
+    ? JSON.parse(savedReview)
+    : {
+        good: 0,
+        neutral: 0,
+        bad: 0,
     };
-  });
+  
+  // if (savedReview !== null) {
+  //   return JSON.parse(savedReview);
+  // }
+
+  // return {
+  //   good: 0,
+  //   neutral: 0,
+  //   bad: 0,
+  // };
+};
+
+const App = () => {
+  const [review, setReview] = useState(getInitialReview);
   const { good, neutral, bad } = review;
 
   useEffect(() => {
